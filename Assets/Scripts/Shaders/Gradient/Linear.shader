@@ -85,7 +85,7 @@ Shader "UI/Gradient/Linear"
 #else
                 fixed Lerp = i.uv.y;
 #endif
-                return tex2D(_MainTex, i.uv) * lerp(_DownCol, i.col, Lerp);
+                return tex2D(_MainTex, i.uv) * fixed4(lerp(_DownCol.rgb, i.col.rgb, Lerp).rgb, i.col.a);
             }
             ENDCG
         }

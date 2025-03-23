@@ -57,12 +57,14 @@ Shader "UI/Gradient/Linear"
             struct appdata
             {
                 float4 vertex : POSITION;
+                float4 col: COLOR;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float4 col: COLOR;
                 float4 vertex : SV_POSITION;
             };
             sampler2D _MainTex;
@@ -76,6 +78,7 @@ Shader "UI/Gradient/Linear"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.col = v.col;
                 return o;
             }
 
@@ -95,6 +98,7 @@ Shader "UI/Gradient/Linear"
                 {
                     multiplyColor = lerp(_MidColor, _UpColor, (Lerp-0.5) / 0.5);
                 }
+                multiplyColor.a = i.col.a;
                 return tex2D(_MainTex, i.uv) * multiplyColor;
             }
             ENDCG

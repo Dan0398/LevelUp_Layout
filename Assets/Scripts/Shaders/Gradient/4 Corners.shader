@@ -55,12 +55,14 @@ Shader "UI/Gradient/4 Corners"
             struct appdata
             {
                 float4 vertex : POSITION;
+                float4 col: COLOR;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float4 col: COLOR;
                 float4 vertex : SV_POSITION;
             };
             sampler2D _MainTex;
@@ -75,6 +77,7 @@ Shader "UI/Gradient/4 Corners"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.col = v.col;
                 return o;
             }
 
@@ -82,7 +85,7 @@ Shader "UI/Gradient/4 Corners"
             {
                 float4 UpColor = lerp(_UpLeft, _UpRight, i.uv.x);
                 float4 DownColor = lerp(_DownLeft, _DonwRight, i.uv.x);
-                return tex2D(_MainTex, i.uv) * lerp(DownColor, UpColor, i.uv.y);
+                return tex2D(_MainTex, i.uv) * fixed4(lerp(DownColor, UpColor, i.uv.y).rgb, i.col.a);
             }
             ENDCG
         }
