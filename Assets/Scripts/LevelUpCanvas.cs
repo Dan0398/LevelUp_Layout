@@ -8,6 +8,11 @@ public class LevelUpCanvas : MonoBehaviour
     [SerializeField] private AdsCanvas _ads;
     [SerializeField] private Animator _windowAnimator;
     
+    [Space(20)]
+    [SerializeField] private AudioSource _canvasSource;
+    [SerializeField] private AudioClip _showSound, _hideSound;
+    
+    [Space(20)]
     [SerializeField] private TMPro.TMP_Text _currentLevelLabel;
     [SerializeField] private string _levelFormat = "- Level {0} -";
     
@@ -26,6 +31,10 @@ public class LevelUpCanvas : MonoBehaviour
         _currentLevelLabel.text = string.Format(_levelFormat, _currentLevel);
         _claimTurnable.SetActive(false);
         _windowAnimator.SetBool(Show_AnimatorProperty, true);
+        if (_canvasSource != null && _showSound != null)
+        {
+            _canvasSource.PlayOneShot(_showSound);
+        }
         _adsShow = false;
         StopClaimTimer();
     }
@@ -80,6 +89,10 @@ public class LevelUpCanvas : MonoBehaviour
     
     private void HideWindowAnimated()
     {
+        if (_canvasSource != null && _hideSound != null)
+        {
+            _canvasSource.PlayOneShot(_hideSound);
+        }
         _windowAnimator.SetBool(Show_AnimatorProperty, false);
     }
 }
